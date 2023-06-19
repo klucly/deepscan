@@ -18,7 +18,7 @@ WIDTH = 1280
 HEIGHT = 920
 
 ARC_WIDTH = 40
-ARC_X_SPACING = 0.05
+ARC_X_SPACING = 0.01
 ARC_Y_SPACING = 0.3
 STARTING_RADIUS = 50
 RESOLUTION = 1000
@@ -296,12 +296,18 @@ class Main:
         # Get the highlighted folder
         # NOTE: Binary search can be implemented
         # for unnoticeably higher performance.
+        found = False
         for folder_i, folder in enumerate(layer):
             if folder.offset + folder.relative_weight > angle_coef > folder.offset:
+                found = True
                 break
-        
-        # Update highlighted
-        self.is_main_highlighted = False
+
+        # Highlight main if none highlighted
+        self.is_main_highlighted = not found
+        if not found: return
+
+        # In case we find an arc to highlight,
+        # we update highlight
         self.highlighted_pos = (distance, folder_i)
         self.highlighted_obj = folder
 
