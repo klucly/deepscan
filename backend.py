@@ -14,7 +14,7 @@ def _add_subfolders(parent: FolderUI, queue: Queue) -> None:
         queue.put((parent, entry.path))
         
 
-def generate_structure(start_path = 'C:\Program Files (x86)') -> List[List[FolderUI]]:
+def generate_structure(start_path = '.') -> List[List[FolderUI]]:
     build_array = []
     queue = Queue()
     prev_depth = -1
@@ -34,6 +34,10 @@ def generate_structure(start_path = 'C:\Program Files (x86)') -> List[List[Folde
         
         # Creating new levels on depth change
         depth = path.count("\\")
+        if len(path.split("\\")) == 2 and not title:
+            depth = 0
+            title = path.split("\\")[0]
+
         if depth != prev_depth:
             prev_depth = depth
             build_array.append([])
